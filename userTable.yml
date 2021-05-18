@@ -1,0 +1,17 @@
+userTable:
+  Type: AWS::DynamoDB::Table
+  Properties:
+    TableName: ${self:custom.UserTable}
+    AttributeDefinitions:
+        #There are less attributes than the model because there are some of them that are optional  
+      - AttributeName: username
+        AttributeType: S
+    KeySchema:
+      - AttributeName: username
+        KeyType: HASH
+    BillingMode: PAY_PER_REQUEST
+
+tableName: icc4220-user-table
+ARN:
+  Fn::Sub:
+    'arn:aws:dynamodb:${self:custom.common.arnRegionAndAccount}:table/${self:custom.UserTable}'

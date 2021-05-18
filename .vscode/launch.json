@@ -1,0 +1,15 @@
+{
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Services unwatch",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "yarn",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "runtimeArgs": ["run","offline","--webpack-no-watch"],
+      "port": 9229
+    }
+  ]
+}
