@@ -2,6 +2,7 @@ import type { AWS } from '@serverless/typescript';
 
 import functions from './src/functions'
 import userTable from './UserTable'
+import roomTable from './RoomTable'
 
 const serverlessConfiguration: AWS = {
   service: 'icc4220-scrum-poker',
@@ -19,7 +20,8 @@ const serverlessConfiguration: AWS = {
   ],
   resources: {
     Resources: {
-      userTable
+      userTable,
+      roomTable
     }
   },
   provider: {
@@ -27,6 +29,7 @@ const serverlessConfiguration: AWS = {
     runtime: 'nodejs12.x',
     region: 'us-east-1',
     stage: 'dev',
+    profile:'abstract',
     httpApi: {
       cors: true,
       payload: '1.0'
