@@ -15,3 +15,86 @@ tableName: icc4220-user-table
 ARN:
   Fn::Sub:
     'arn:aws:dynamodb:${self:custom.common.arnRegionAndAccount}:table/${self:custom.UserTable}'
+
+    # NOTE: update this with your service name
+service: icc4220-scrum-poker
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+  - serverless-dynamodb-local
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  profile: ${opt:profile, "abstract"}
+  stage: ${opt:stage,"dev"}
+  region: ${opt:region, 'us-east-1'}
+  timeout: 29
+  memorySize: 128
+  httpApi: 
+    cors: true
+    payload: '1.0'
+    
+  logs:
+    httpApi: true
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 'dynamodb:*'
+      Resource:
+        - ${self:custom.common.userTable.ARN}
+   
+
+resources:
+  Resources:
+    UserTable: ${self:custom.common.userTable.userTable}
+
+functions:
+  singup:
+    handler: ./signup.signup
+    package:
+      excludeDevDependencies: false
+    events:
+      - httpApi:
+          path: /signup
+          method: POST     
+  login:
+    handler: ./login.login
+    events:
+      - httpApi:
+          path: /login
+          method: POST     
+  deck:
+    handler: ./deck.getDeck
+    events:
+      - schedule:
+          10 * * * * * * 
+      - httpApi:
+          path: /decks
+          method: GET     
+
+
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules:
+      forceExclude:
+        - aws-sdk
+    packager: yarn 
+  UserTable: ${self:custom.common.userTable.tableName}
+
+  dynamodb:
+    stages:
+      - ${self:provider.stage}
+    start:
+      port: 8000
+      migrate: true
+      inMemory: true
+    host: localhost
+    directory: /tmp
+  serviceName: scrum-poker
+  common:
+    arnRegionAndAccount: ${self:provider.region}:${AWS::AccountId}
+    userTable: ${file(./userTable.yml)}
+  

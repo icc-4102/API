@@ -1,8 +1,10 @@
 import type { AWS } from '@serverless/typescript';
 
 import functions from './src/functions'
-import userTable from './UserTable'
-import roomTable from './RoomTable'
+import cloudFormationResources from './serverles.config'
+
+
+const { roomTable,userTable } = cloudFormationResources
 
 const serverlessConfiguration: AWS = {
   service: 'icc4220-scrum-poker',
@@ -10,6 +12,7 @@ const serverlessConfiguration: AWS = {
   custom: {
     webpack: {
       webpackConfig: './webpack.config.js',
+      packager: 'yarn',
       includeModules: true,
     },
   },
@@ -29,7 +32,7 @@ const serverlessConfiguration: AWS = {
     runtime: 'nodejs12.x',
     region: 'us-east-1',
     stage: 'dev',
-    profile:'abstract',
+    profile: 'abstract',
     httpApi: {
       cors: true,
       payload: '1.0'
@@ -37,10 +40,18 @@ const serverlessConfiguration: AWS = {
     logs: {
       httpApi: true
     },
-    // iamRoleStatements: {
-    //   Effect: 'Allow',
-    // }
-    // ,
+    iamRoleStatements: [{
+      Effect: 'Allow',
+      Action: ['dynamodb:*'],
+      Resource: ['arn:aws:dynamodb:us-east-1:591842942740:table/icc4220-user-table']
+    }]
+    ,
+    // iamRoleStatements:
+    // - Effect: 'Allow'
+    //   Action:
+    //     - 'dynamodb:*'
+    //   Resource:
+    //     // - ${self:custom.common.userTable.ARN}
     lambdaHashingVersion: '20201221',
   },
   // import the function via paths

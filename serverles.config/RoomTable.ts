@@ -1,4 +1,4 @@
-export default {
+export const roomTable  = {
     Type: 'AWS::DynamoDB::Table',
     Properties: {
       TableName: 'icc4220-room-table',

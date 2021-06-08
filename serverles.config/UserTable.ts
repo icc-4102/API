@@ -1,4 +1,4 @@
-export default {
+export const userTable = {
   Type: 'AWS::DynamoDB::Table',
   Properties: {
     TableName: 'icc4220-user-table',
