@@ -46,15 +46,8 @@ const serverlessConfiguration: AWS = {
       Resource: ['arn:aws:dynamodb:us-east-1:591842942740:table/icc4220-user-table']
     }]
     ,
-    // iamRoleStatements:
-    // - Effect: 'Allow'
-    //   Action:
-    //     - 'dynamodb:*'
-    //   Resource:
-    //     // - ${self:custom.common.userTable.ARN}
     lambdaHashingVersion: '20201221',
   },
-  // import the function via paths
   functions,
 };
 

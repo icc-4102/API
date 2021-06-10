@@ -1,16 +1,8 @@
-import { dynamo } from '@cloudcar-app/aws-tools-lib';
 import {APIGatewayProxyEvent} from 'aws-lambda'
-import {checkToken} from '../../../utils/check-token'
-import {Deck} from '../deck/deck'
-import {getRoom} from './actions/get.action'
+import {checkToken} from '../../../../utils/check-token'
+import {getRoom} from '../actions/get.action'
 
 
-interface RoomParams {
-  roomId: string
-  roomName: string
-  deck: Deck
-  members: string[]
- }
 
 export const get = async (event:APIGatewayProxyEvent, _context) => {
   try {
@@ -32,7 +24,7 @@ export const get = async (event:APIGatewayProxyEvent, _context) => {
       }
     }
 
-    const result = await getRoom(roomName);
+    const result = await getRoom(token,roomName);
 
     if (result === null) {
       return {

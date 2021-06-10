@@ -1,7 +1,6 @@
-import {Deck} from '../../deck'
-import {dynamo} from '@cloudcar-app/aws-tools-lib'
-
-
+import {Deck} from '../../deck/deck'
+import { dynamo } from '@cloudcar-app/aws-tools-lib'
+import { getUserByToken } from '../../../../utils/get-user'
 interface RoomParams {
     roomId: string
     roomName: string
@@ -9,7 +8,8 @@ interface RoomParams {
     members: string[]
    }
 
-export const getRoom = async (roomId): Promise<RoomParams> => {
+export const getRoom = async (token, roomId): Promise<RoomParams> => {
+    const user = await getUserByToken(token)
     try {
         const params = {
             TableName: "icc4220-user-table",
@@ -19,8 +19,11 @@ export const getRoom = async (roomId): Promise<RoomParams> => {
             },
             ConsistentRead: true,
           };
-          const result = await dynamo.getItem(params) as RoomParams;
-          return result
+        const result = await dynamo.getItem(params) as RoomParams;
+        if (!result && result.members.includes(user.id)) {
+            return result
+        }
+        return null
     } catch (error) {
         console.log(error.message)
     }
