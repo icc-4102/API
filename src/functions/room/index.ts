@@ -1,49 +1,57 @@
 import { handlerPath } from '../../libs/handlerResolver';
 
 export const list = {
-  handler: `${handlerPath(__dirname)}/controller/list.listRooms`,
+  handler: `${handlerPath(__dirname)}/controller/list.list`,
   events: [
-      { httpApi: {
+    {
+      httpApi: {
         method: 'GET',
-        path: '/rooms'
-      }}
-  ]
-}
+        path: '/rooms',
+      },
+    },
+  ],
+};
 export const get = {
-    handler: `${handlerPath(__dirname)}/controller/get.get`,
-    events: [
-        { httpApi: {
-          method: 'GET',
-          path: '/rooms/{roomId}'
-        }}
-    ]
-  }
+  handler: `${handlerPath(__dirname)}/controller/get.get`,
+  events: [
+    {
+      httpApi: {
+        method: 'GET',
+        path: '/rooms/{roomName}',
+      },
+    },
+  ],
+};
 export const create = {
-    handler: `${handlerPath(__dirname)}/controller/create.create`,
-    events: [
-        { httpApi: {
-          method: 'POST',
-          path: '/rooms'
-        }}
-    ]
-  }
+  handler: `${handlerPath(__dirname)}/controller/create.create`,
+  events: [
+    {
+      httpApi: {
+        method: 'POST',
+        path: '/rooms',
+      },
+    },
+  ],
+};
 export const subscribe = {
-    handler: `${handlerPath(__dirname)}/controller/subscribe.subscribe`,
-    events: [
-        { httpApi: {
-          method: 'POST',
-          path: '/rooms/join'
-        }}
-    ]
-  }
+  handler: `${handlerPath(__dirname)}/controller/subscribe.subscribe`,
+  events: [
+    {
+      httpApi: {
+        method: 'POST',
+        path: '/joinRoom',
+      },
+    },
+  ],
+};
 export const unsubscribe = {
-    handler: `${handlerPath(__dirname)}/controller/unsubscribe.unsubscribe`,
-    events: [
-        { httpApi: {
-          method: 'POST',
-          path: '/rooms/unsubscribe'
-        }}
-    ]
-  }
-
-
+  handler: `${handlerPath(__dirname)}/controller/unsubscribe.unsubscribe`,
+  events: [
+    {
+      httpApi: {
+        method: 'DELETE',
+        path: '/room',
+      },
+    },
+  ],
+};

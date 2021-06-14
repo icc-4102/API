@@ -1,37 +1,34 @@
 import { APIGatewayProxyEvent } from 'aws-lambda';
-import * as yup from 'yup';
 import { checkToken } from '../../../../utils/check-token';
-import { createRooms } from '../actions/create.action';
+import { getVoteResults } from '../actions/get.action';
 
-const createRoomSchema = yup.object().shape({
-  roomName: yup.string().required(),
-  password: yup.string().required(),
-  deck: yup.object().shape({
-    name: yup.string().required(),
-    cards: yup.array().of(yup.string().required()),
-  }),
-});
-
-export const create = async (event: APIGatewayProxyEvent) => {
+// eslint-disable-next-line import/prefer-default-export
+export const getVote = async (event: APIGatewayProxyEvent) => {
   try {
     const { token } = event.headers;
     await checkToken(token);
 
-    const { body } = event;
-    if (!body) {
+    const queryParams = event.pathParameters || '';
+    if (!queryParams) {
       throw new Error('The body is empty');
     }
 
-    const parsedBody = JSON.parse(body);
+    const { roomName } = queryParams;
+    if (!roomName) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify(
+          {
+            message: 'There is a problem with the query params',
+          },
+          null,
+          2,
+        ),
+      };
+    }
 
-    await createRoomSchema
-      .validate(parsedBody, { abortEarly: false })
-      .catch((error) => {
-        throw new Error(error.errors);
-      });
+    const result = await getVoteResults(token, roomName);
 
-    const result = await createRooms(parsedBody, token);
-    console.log('result', result);
     if (result === null) {
       return {
         statusCode: 400,

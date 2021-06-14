@@ -6,8 +6,9 @@ import {
   list as listRooms,
   create as createRoom,
   subscribe as subscribeRoom,
-  unsubscribe as unsubscribeRoom
-} from './room'
+  unsubscribe as unsubscribeRoom,
+} from './room';
+import { getResult, vote } from './vote';
 
 export default {
   deck,
@@ -17,5 +18,7 @@ export default {
   listRooms,
   createRoom,
   subscribeRoom,
-  unsubscribeRoom
-}
+  unsubscribeRoom,
+  getResult,
+  vote,
+};

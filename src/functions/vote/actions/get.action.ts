@@ -1,38 +1,39 @@
 import { dynamo } from '@cloudcar-app/aws-tools-lib';
 import { DynamoDB } from 'aws-sdk';
-import { getUserByToken } from '../../../../utils/get-user';
 import { Deck } from '../../deck/deck';
-import { updateRoom } from '../utils/update-room';
+import { getUserByToken } from '../../../../utils/get-user';
 
 interface RoomParams {
   roomId: string;
   roomName: string;
   deck: Deck;
   members: string[];
+  result: Vote[];
 }
-export const unsubscribeRoom = async (token, body) => {
-  try {
-    const { id } = await getUserByToken(token);
-    const { name } = body;
 
+interface Vote {
+  name: string;
+  vote: string;
+}
+
+export const getVoteResults = async (token, roomName): Promise<Object> => {
+  const user = await getUserByToken(token);
+
+  try {
     const params: DynamoDB.DocumentClient.QueryInput = {
       TableName: 'icc4220-room-table',
       KeyConditionExpression: 'roomName = :roomName',
       ExpressionAttributeValues: {
-        ':roomName': name,
+        ':roomName': roomName,
       },
       ConsistentRead: true,
     };
-
     const room = (await dynamo.getItem(params)) as RoomParams;
-    if (room && room.members.includes(id)) {
-      const index = room.members.indexOf(id);
-      if (index > -1) {
-        room.members.splice(index, 1);
-      }
-      await updateRoom(room);
+    if (room && room.members.includes(user.id)) {
+      const { roomName, deck, result } = room;
+      return { roomName, deck, result };
     }
-    return room;
+    return null;
   } catch (error) {
     console.log(error.message);
   }

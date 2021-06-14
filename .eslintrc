@@ -1,0 +1,31 @@
+{
+    "env": {
+      "es2020": true,
+      "node": true
+    },
+    "extends": [
+      "airbnb-typescript/base",
+      "plugin:prettier/recommended",
+      "prettier",
+      "prettier/@typescript-eslint"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "project": ["./tsconfig.json"]
+    },
+    "plugins": [
+      "no-only-tests",
+      "prettier",
+      "@typescript-eslint"
+    ],
+    "rules": {
+      "quotes": [2,"single"],
+      "import/prefer-default-export": "off",
+      "max-len": [2, { "code": 120, "ignorePattern": "^import .*" }],
+      "extraneous-dependencies": [0],
+      "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+      "func-style": ["error", "expression"],
+      "no-only-tests/no-only-tests": "error"
+    }
+  }
+  

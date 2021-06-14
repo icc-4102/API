@@ -3,10 +3,10 @@ export const roomTable  = {
     Properties: {
       TableName: 'icc4220-room-table',
       AttributeDefinitions: [
-        { AttributeName: 'roomId', AttributeType: 'S' }
+        { AttributeName: 'roomName', AttributeType: 'S' },
       ],
       KeySchema: [
-        { AttributeName: 'roomId', KeyType: 'HASH' },
+        { AttributeName: 'roomName', KeyType: 'HASH' },
       ],
       BillingMode: 'PAY_PER_REQUEST'
     }

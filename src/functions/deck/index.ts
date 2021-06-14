@@ -6,8 +6,8 @@ export default {
     {
       httpApi: {
         method: 'GET',
-        path: '/decks'
-      }
-    }
-  ]
-}
+        path: '/decks',
+      },
+    },
+  ],
+};

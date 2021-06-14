@@ -1,18 +1,14 @@
 import { APIGatewayProxyEvent } from 'aws-lambda';
 import * as yup from 'yup';
 import { checkToken } from '../../../../utils/check-token';
-import { createRooms } from '../actions/create.action';
+import { voteRoom } from '../actions/create.action';
 
-const createRoomSchema = yup.object().shape({
+const voteSchema = yup.object().shape({
   roomName: yup.string().required(),
-  password: yup.string().required(),
-  deck: yup.object().shape({
-    name: yup.string().required(),
-    cards: yup.array().of(yup.string().required()),
-  }),
+  vote: yup.string().required(),
 });
 
-export const create = async (event: APIGatewayProxyEvent) => {
+export const createVote = async (event: APIGatewayProxyEvent) => {
   try {
     const { token } = event.headers;
     await checkToken(token);
@@ -24,20 +20,19 @@ export const create = async (event: APIGatewayProxyEvent) => {
 
     const parsedBody = JSON.parse(body);
 
-    await createRoomSchema
+    await voteSchema
       .validate(parsedBody, { abortEarly: false })
       .catch((error) => {
         throw new Error(error.errors);
       });
 
-    const result = await createRooms(parsedBody, token);
-    console.log('result', result);
+    const result = await voteRoom(token, parsedBody);
     if (result === null) {
       return {
         statusCode: 400,
         body: JSON.stringify(
           {
-            message: 'the roomId  is not valid',
+            message: 'the room is not valid',
           },
           null,
           2,
@@ -46,7 +41,7 @@ export const create = async (event: APIGatewayProxyEvent) => {
     }
     return {
       statusCode: 200,
-      body: JSON.stringify(result, null, 2),
+      body: JSON.stringify({ message: 'La votación fue realizada' }, null, 2),
     };
   } catch (err) {
     return {

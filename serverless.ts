@@ -32,7 +32,7 @@ const serverlessConfiguration: AWS = {
     runtime: 'nodejs12.x',
     region: 'us-east-1',
     stage: 'dev',
-    profile: 'abstract',
+    profile: 'default',
     httpApi: {
       cors: true,
       payload: '1.0'
@@ -43,7 +43,10 @@ const serverlessConfiguration: AWS = {
     iamRoleStatements: [{
       Effect: 'Allow',
       Action: ['dynamodb:*'],
-      Resource: ['arn:aws:dynamodb:us-east-1:591842942740:table/icc4220-user-table']
+      Resource: [
+        'arn:aws:dynamodb:us-east-1:591842942740:table/icc4220-user-table',
+        'arn:aws:dynamodb:us-east-1:591842942740:table/icc4220-room-table'
+      ]
     }]
     ,
     lambdaHashingVersion: '20201221',

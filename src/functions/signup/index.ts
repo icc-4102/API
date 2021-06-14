@@ -6,8 +6,8 @@ export default {
     {
       httpApi: {
         method: 'POST',
-        path: '/signup'
-      }
-    }
-  ]
-}
+        path: '/signup',
+      },
+    },
+  ],
+};

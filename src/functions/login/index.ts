@@ -3,9 +3,11 @@ import { handlerPath } from '../../libs/handlerResolver';
 export default {
   handler: `${handlerPath(__dirname)}/login.login`,
   events: [
-      { httpApi: {
+    {
+      httpApi: {
         method: 'POST',
-        path: '/login'
-      }}
-  ]
-}
+        path: '/login',
+      },
+    },
+  ],
+};
