@@ -4,7 +4,7 @@ import { checkToken } from '../../../../utils/check-token';
 import { subscribeRoom } from '../actions/subscribe.action';
 
 const subscribeRoomSchema = yup.object().shape({
-  name: yup.string().required(),
+  roomName: yup.string().required(),
   password: yup.string().required(),
 });
 

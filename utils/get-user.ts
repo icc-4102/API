@@ -13,7 +13,6 @@ interface UserParams {
 }
 
 export const getUserByToken = async (token) => {
-  console.log;
   try {
     const params: DynamoDB.DocumentClient.ScanInput = {
       TableName: 'icc4220-user-table',
@@ -32,3 +31,23 @@ export const getUserByToken = async (token) => {
     console.log(error.message);
   }
 };
+
+export const getUserById = async (id) => {
+  try {
+    const params: DynamoDB.DocumentClient.ScanInput = {
+      TableName: 'icc4220-user-table',
+      FilterExpression: '#user_id = :user_id_val',
+      ExpressionAttributeNames: {
+        '#user_id': 'id',
+      },
+      ExpressionAttributeValues: { ':user_id_val': id },
+    };
+    const result = await documentClient.scan(params).promise();
+    if (result.Items[0]) {
+      const user = result.Items[0];
+      return user as UserParams;
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+}

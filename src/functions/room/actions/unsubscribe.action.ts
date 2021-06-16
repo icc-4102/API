@@ -13,13 +13,13 @@ interface RoomParams {
 export const unsubscribeRoom = async (token, body) => {
   try {
     const { id } = await getUserByToken(token);
-    const { name } = body;
+    const { roomName } = body;
 
     const params: DynamoDB.DocumentClient.QueryInput = {
       TableName: 'icc4220-room-table',
       KeyConditionExpression: 'roomName = :roomName',
       ExpressionAttributeValues: {
-        ':roomName': name,
+        ':roomName': roomName,
       },
       ConsistentRead: true,
     };
@@ -32,7 +32,7 @@ export const unsubscribeRoom = async (token, body) => {
       }
       await updateRoom(room);
     }
-    return room;
+    return { message: "Desuscribir sala fue ejecutado correctamente" };
   } catch (error) {
     console.log(error.message);
   }

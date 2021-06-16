@@ -14,13 +14,13 @@ interface RoomParams {
 export const subscribeRoom = async (token, body) => {
   try {
     const { id } = await getUserByToken(token);
-    const { name, password } = body;
+    const { roomName, password } = body;
 
     const params: DynamoDB.DocumentClient.QueryInput = {
       TableName: 'icc4220-room-table',
       KeyConditionExpression: 'roomName = :roomName',
       ExpressionAttributeValues: {
-        ':roomName': name,
+        ':roomName': roomName,
       },
       ConsistentRead: true,
     };
@@ -29,9 +29,12 @@ export const subscribeRoom = async (token, body) => {
     if (room && !room.members.includes(id) && password === room.password) {
       room.members.push(id);
       await updateRoom(room);
-      return room;
+      const { members } = room
+      return { message: "Te has unido con exito", members };
+    } if (room) {
+      return { message: "Ya estas subscrito o problemas de autentificación" };
     }
-    return {};
+    return {}
   } catch (error) {
     console.log(error.message);
   }

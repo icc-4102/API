@@ -1,6 +1,6 @@
 import { dynamo } from '@cloudcar-app/aws-tools-lib';
 import { Deck } from '../../deck/deck';
-import { getUserByToken } from '../../../../utils/get-user';
+import { getUserByToken, getUserById } from '../../../../utils/get-user';
 
 interface RoomParams {
   roomId: string;
@@ -19,6 +19,8 @@ export const listRooms = async (token): Promise<RoomParams[]> => {
       Attributes: roomParams,
     };
     const result = (await dynamo.listItems(params)) as RoomParams[];
+    const members = await Promise.resolve(result.map(async (room) => await room.members.map(async (member) => await getUserById(member)))).then((mem) => console.log(mem))
+    console.log(members)
     return result.filter((room) => room.members.includes(user.id));
   } catch (error) {
     console.log(error.message);

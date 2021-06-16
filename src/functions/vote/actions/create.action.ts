@@ -30,7 +30,7 @@ export const voteRoom = async (token, body): Promise<Object> => {
       ConsistentRead: true,
     };
     const room = (await dynamo.getItem(params)) as RoomParams;
-    if (!room.deck.cards.includes(vote)) {
+    if (!room.deck.cards.includes(vote) || vote !== `☕️ ` || vote !== `?`) {
       throw Error('The card doesnt exist');
     }
 
@@ -46,7 +46,7 @@ export const voteRoom = async (token, body): Promise<Object> => {
     }
     if (room && room.members.includes(user.id)) {
       const voted = { name: user.name, vote } as Vote;
-      if (room.result) {
+      if (room.result !== undefined) {
         room.result.push(voted);
       } else {
         room.result = [voted];
