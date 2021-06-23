@@ -32,7 +32,7 @@ export const getUserByToken = async (token) => {
   }
 };
 
-export const getUserById = async (id) => {
+export const getUserById = async (userId) => {
   try {
     const params: DynamoDB.DocumentClient.ScanInput = {
       TableName: 'icc4220-user-table',
@@ -40,14 +40,15 @@ export const getUserById = async (id) => {
       ExpressionAttributeNames: {
         '#user_id': 'id',
       },
-      ExpressionAttributeValues: { ':user_id_val': id },
+      ExpressionAttributeValues: { ':user_id_val': userId },
     };
     const result = await documentClient.scan(params).promise();
     if (result.Items[0]) {
-      const user = result.Items[0];
-      return user as UserParams;
+      const user = result.Items[0] as UserParams;
+      const { username, name, id } = user;
+      return { id, username, name };
     }
   } catch (error) {
     console.log(error.message);
   }
-}
+};

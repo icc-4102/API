@@ -48,7 +48,7 @@ export const subscribe = async (event: APIGatewayProxyEvent, _context) => {
       statusCode: 500,
       body: JSON.stringify(
         {
-          message: 'Problem with the request',
+          message: err.message,
         },
         null,
         2,

@@ -9,6 +9,7 @@ import {
   unsubscribe as unsubscribeRoom,
 } from './room';
 import { getResult, vote } from './vote';
+import { reportLocation } from './location';
 
 export default {
   deck,
@@ -21,4 +22,5 @@ export default {
   unsubscribeRoom,
   getResult,
   vote,
+  reportLocation,
 };

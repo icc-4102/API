@@ -46,14 +46,22 @@ export const create = async (event: APIGatewayProxyEvent) => {
     }
     return {
       statusCode: 200,
-      body: JSON.stringify(result, null, 2),
+      body: JSON.stringify(
+        {
+          message: 'La sala se a creado con exito',
+          roomId: result.roomId,
+          roomName: result.roomName,
+        },
+        null,
+        2,
+      ),
     };
   } catch (err) {
     return {
       statusCode: 500,
       body: JSON.stringify(
         {
-          message: 'Problem with the request',
+          message: err.message,
         },
         null,
         2,

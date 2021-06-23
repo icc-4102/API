@@ -31,12 +31,8 @@ export const getDeck = async (_event, _context) => {
     name: 'T-Shirt',
     cards: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
   };
-  const hoursDeck: Deck = {
-    name: 'Standard',
-    cards: ['0', '1', '2', '3', '4', '6', '8', '12', '16', '24', '32', '40'],
-  };
 
-  const decks = [standardDeck, fibonacciDeck, tshirtDeck, hoursDeck];
+  const decks = [standardDeck, fibonacciDeck, tshirtDeck];
 
   return {
     statusCode: 200,

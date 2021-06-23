@@ -1,3 +1,5 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
 import { dynamo } from '@cloudcar-app/aws-tools-lib';
 import { Deck } from '../../deck/deck';
 import { getUserByToken, getUserById } from '../../../../utils/get-user';
@@ -11,7 +13,7 @@ interface RoomParams {
 
 let roomParams: RoomParams;
 
-export const listRooms = async (token): Promise<RoomParams[]> => {
+export const listRooms = async (token): Promise<Object[]> => {
   const user = await getUserByToken(token);
   try {
     const params = {
@@ -19,10 +21,21 @@ export const listRooms = async (token): Promise<RoomParams[]> => {
       Attributes: roomParams,
     };
     const result = (await dynamo.listItems(params)) as RoomParams[];
-    const members = await Promise.resolve(result.map(async (room) => await room.members.map(async (member) => await getUserById(member)))).then((mem) => console.log(mem))
-    console.log(members)
-    return result.filter((room) => room.members.includes(user.id));
+    const rooms = result.filter((room) => room.members.includes(user.id));
+
+    // for (const room of rooms) {
+    //   const names = await Promise.all(
+    //     room.members.map(async (member) => getUserById(member)),
+    //   );
+    //   // eslint-disable-next-line no-param-reassign
+    //   room.members = names;
+    // }
+
+    return rooms.map((room) => {
+      const { roomId, roomName } = room;
+      return { roomId, roomName };
+    });
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
   }
 };
