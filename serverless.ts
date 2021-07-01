@@ -1,10 +1,9 @@
 import type { AWS } from '@serverless/typescript';
 
-import functions from './src/functions'
-import cloudFormationResources from './serverles.config'
+import functions from './src/functions';
+import cloudFormationResources from './serverles.config';
 
-
-const { roomTable,userTable } = cloudFormationResources
+const { roomTable, userTable } = cloudFormationResources;
 
 const serverlessConfiguration: AWS = {
   service: 'icc4220-scrum-poker',
@@ -19,13 +18,13 @@ const serverlessConfiguration: AWS = {
   plugins: [
     'serverless-webpack',
     'serverless-offline',
-    'serverless-dynamodb-local'
+    'serverless-dynamodb-local',
   ],
   resources: {
     Resources: {
       userTable,
-      roomTable
-    }
+      roomTable,
+    },
   },
   provider: {
     name: 'aws',
@@ -35,20 +34,21 @@ const serverlessConfiguration: AWS = {
     profile: 'default',
     httpApi: {
       cors: true,
-      payload: '1.0'
+      payload: '1.0',
     },
     logs: {
-      httpApi: true
+      httpApi: true,
     },
-    iamRoleStatements: [{
-      Effect: 'Allow',
-      Action: ['dynamodb:*'],
-      Resource: [
-        'arn:aws:dynamodb:us-east-1:591842942740:table/icc4220-user-table',
-        'arn:aws:dynamodb:us-east-1:591842942740:table/icc4220-room-table'
-      ]
-    }]
-    ,
+    iamRoleStatements: [
+      {
+        Effect: 'Allow',
+        Action: ['dynamodb:*'],
+        Resource: [
+          'arn:aws:dynamodb:us-east-1:591842942740:table/icc4220-user-table',
+          'arn:aws:dynamodb:us-east-1:591842942740:table/icc4220-room-table',
+        ],
+      },
+    ],
     lambdaHashingVersion: '20201221',
   },
   functions,

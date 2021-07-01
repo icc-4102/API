@@ -62,7 +62,7 @@ export const getRoom = async (token, roomName): Promise<Object> => {
               location: {
                 long: location.long,
                 lat: location.lat,
-                date: location.timestamp,
+                timestamp: location.timestamp,
               },
             };
           }

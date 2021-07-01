@@ -1,6 +1,4 @@
-import { userTable } from './UserTable'
-import { roomTable } from './RoomTable'
+import { userTable } from './UserTable';
+import { roomTable } from './RoomTable';
 
-
-
-export default {userTable,roomTable}
+export default { userTable, roomTable };
